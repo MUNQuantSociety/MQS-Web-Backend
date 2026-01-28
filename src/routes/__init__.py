@@ -1,24 +1,11 @@
 from fastapi import APIRouter
 
-from src.routes import (
-    auth,
-    billing,
-    billing_webhook,
-    chats,
-    health,
-    plans,
-    uploads,
-    usage,
-    user,
-)
+from src.routes import backtests, events, health, ibkr, leaderboard, user
 
 api_router = APIRouter()
-api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
-api_router.include_router(user.router, prefix="/users", tags=["users"])
-api_router.include_router(billing.router, prefix="/billing", tags=["billing"])
-api_router.include_router(billing_webhook.router, prefix="/billing", tags=["billing"])
-api_router.include_router(uploads.router, prefix="/uploads", tags=["uploads"])
-api_router.include_router(usage.router, prefix="/usage", tags=["usage"])
-api_router.include_router(chats.router, prefix="/chats", tags=["chats"])
-api_router.include_router(plans.router, prefix="/plans", tags=["plans"])
 api_router.include_router(health.router, tags=["health"])
+api_router.include_router(events.router, prefix="/events", tags=["events"])
+api_router.include_router(ibkr.router, prefix="/ibkr", tags=["ibkr"])
+api_router.include_router(leaderboard.router, prefix="/leaderboard", tags=["leaderboard"])
+api_router.include_router(backtests.router, prefix="/backtests", tags=["backtests"])
+api_router.include_router(user.router, prefix="/users", tags=["users"])
