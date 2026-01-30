@@ -25,6 +25,11 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     "apps.api",
+    "apps.accounts",
+    "apps.calendar",
+    "apps.ibkr",
+    "apps.leaderboard",
+    "apps.backtests",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
