@@ -1,43 +1,60 @@
-# MQS Webapp Backend
+# MQS Web Backend (FastAPI)
 
-## Structure
-- `config/`: project configuration and settings modules
-- `apps/`: domain apps (start here for new features)
-- `manage.py`: Django entry point
+Quick start for a fresh machine (Windows + PowerShell).
 
-## Setup
-1. Create and activate a virtual environment:
-   ```powershell
-   .\venv\Scripts\Activate.ps1
-   ```
-2. Verify you are using the venv Python/pip:
-   ```powershell
-   where.exe python
-   python -m pip -V
-   ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Copy `.env.example` to `.env` and update values.
-5. Run migrations:
-   ```bash
-   python manage.py migrate
-   ```
-6. Start the server:
-   ```bash
-   python manage.py runserver
-   ```
+## 1) Create and activate a virtual environment
 
-## Freeze dependencies (optional)
-Use the active venv to capture exact versions:
 ```powershell
-python -m pip freeze > requirements.txt
+python -m venv venv
+.\venv\Scripts\Activate.ps1
 ```
 
-## Settings modules
-- Local: `config.settings.local` (default in `manage.py`)
-- Production: `config.settings.production`
+## 2) Install dependencies
 
-## Health check
-- `GET /api/health/`
+```powershell
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+## 3) Configure environment variables
+
+Create a `.env` file in the project root (same folder as `requirements.txt`).
+Example:
+
+```
+APP_NAME="MQS Backend"
+APP_ENV=local
+DEBUG=true
+API_V1_PREFIX=/api/v1
+CORS_ORIGINS=["http://localhost:3000"]
+DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/mqs
+LOG_LEVEL=INFO
+```
+
+Note: `DATABASE_URL` is required by `src/services/database.py`.
+
+## 4) Run the server
+
+```powershell
+python -m uvicorn src.app:app --reload
+```
+
+You should see output like:
+
+```
+INFO:     Uvicorn running on http://127.0.0.1:8000
+```
+
+## 5) Health check
+
+Open this URL in your browser:
+
+```
+http://127.0.0.1:8000/api/v1/health
+```
+
+Expected response:
+
+```
+{"status":"ok"}
+```

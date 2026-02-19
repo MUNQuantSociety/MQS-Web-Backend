@@ -10,4 +10,5 @@ urlpatterns = [
     path("ibkr/", include("apps.ibkr.urls")),
     path("leaderboard/", include("apps.leaderboard.urls")),
     path("backtests/", include("apps.backtests.urls")),
+    path("resources/", include("apps.resources.urls")),
 ]
