@@ -1,1 +1,0 @@
-"""Supabase auth middleware placeholders."""
