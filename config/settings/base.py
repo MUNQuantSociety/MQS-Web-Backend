@@ -21,6 +21,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 THIRD_PARTY_APPS = [
+    "corsheaders",
     "rest_framework",
 ]
 LOCAL_APPS = [
@@ -37,6 +38,7 @@ LOCAL_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware", 
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -125,3 +127,13 @@ REST_FRAMEWORK = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# DigitalOcean Spaces (S3-compatible) configuration
+DO_SPACES_KEY = config("DO_SPACES_KEY", default="")
+DO_SPACES_SECRET = config("DO_SPACES_SECRET", default="")
+DO_SPACES_BUCKET = config("DO_SPACES_BUCKET", default="mqs-resources")
+DO_SPACES_REGION = config("DO_SPACES_REGION", default="sfo3")
+DO_SPACES_ENDPOINT = config(
+    "DO_SPACES_ENDPOINT",
+    default=f"https://{DO_SPACES_REGION}.digitaloceanspaces.com",
+)
