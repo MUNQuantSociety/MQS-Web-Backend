@@ -1,0 +1,10 @@
+{
+    "success": false,
+    "msg": "Unknown User",
+    "error_code": "DISCORD_404",
+    "status_code": 404,
+    "error": {
+        "message": "Unknown User",
+        "code": 10013
+    }
+}

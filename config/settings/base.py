@@ -6,6 +6,35 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 
 SECRET_KEY = config("DJANGO_SECRET_KEY", default="unsafe-secret-key")
 DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
+# Usage:
+# from django.conf import settings
+#
+# PROJECT_DIR = settings.BASE_DIR
+# SECRET_KEY = settings.SECRET_KEY
+# DEBUG = settings.DEBUG
+
+
+# =========================================================
+# Discord Environment Config
+# =========================================================
+
+DISCORD = {
+    "BASE_URL": config("DISCORD_BASE_URL"),
+    "GUILD_ID": config("DISCORD_GUILD_ID"),
+    "BOT_TOKEN": config("DISCORD_BOT_TOKEN"),
+    "TEST_USER": config("DISCORD_TEST_USER"),
+}
+
+# Usage:
+#
+# from django.conf import settings
+#
+# DISCORD_BASE_URL = settings.DISCORD["BASE_URL"]
+# DISCORD_GUILD_ID = settings.DISCORD["GUILD_ID"]
+# DISCORD_BOT_TOKEN = settings.DISCORD["BOT_TOKEN"]
+# DISCORD_TEST_USER = settings.DISCORD["TEST_USER"]
+
+
 ALLOWED_HOSTS = config(
     "DJANGO_ALLOWED_HOSTS",
     default="localhost,127.0.0.1",
