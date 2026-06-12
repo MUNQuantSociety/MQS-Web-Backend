@@ -236,71 +236,106 @@ def get_discord_roles_and_create_internal_role_map():
     )
 
 
-def get_discord_user(user_id=None):
+# def get_discord_user(user_id=None):
+#
+#     if not user_id:
+#         return error_response(
+#             msg="User ID is required",
+#             error_code="INVALID_PARAMS",
+#             status_code=400
+#         )
+#
+#     try:
+#         response = requests.get(
+#             f"{DISCORD_BASE_URL}/guilds/{DISCORD_GUILD_ID}/members/{user_id}",
+#             headers=headers,
+#             timeout=REQUEST_TIMEOUT
+#         )
+#
+#     except requests.RequestException as e:
+#         return error_response(
+#             msg="Failed to communicate with Discord",
+#             error_code="DISCORD_CONNECTION_ERROR",
+#             error=str(e)
+#         )
+#
+#     if response.status_code != 200:
+#         return discord_error(response)
+#
+#     return success_response(
+#         msg="User fetched successfully",
+#         data=response.json()
+#     )
 
-    if not user_id:
+
+# Function: get userid from token
+def get_discord_user(token):
+    if not token:
         return error_response(
-            msg="User ID is required",
+            msg="Token must be present to get userID",
             error_code="INVALID_PARAMS",
             status_code=400
         )
 
     try:
         response = requests.get(
-            f"{DISCORD_BASE_URL}/guilds/{DISCORD_GUILD_ID}/members/{user_id}",
-            headers=headers,
+            f"{DISCORD_BASE_URL}/user/@me",
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {token}"
+            },
             timeout=REQUEST_TIMEOUT
         )
 
+        return response
+
     except requests.RequestException as e:
         return error_response(
-            msg="Failed to communicate with Discord",
-            error_code="DISCORD_CONNECTION_ERROR",
+            msg="Failed to get discord user",
+            error_code="DISCORD_ERROR",
             error=str(e)
         )
-
-    if response.status_code != 200:
-        return discord_error(response)
-
-    return success_response(
-        msg="User fetched successfully",
-        data=response.json()
-    )
 
 
 # =========================================================
 # USER FLOW
 # =========================================================
+"""
+@params: access_token (use the token to send to DISCORD_API/user/me)
+that get's the user id
+"""
 
-def create_user_via_discord(user_id):
 
-    user_response = get_discord_user(user_id)
-
-    if not user_response["success"]:
-        return error_response(
-            msg=user_response["msg"],
-            error_code=user_response["error_code"],
-            error=user_response.get("error"),
-            status_code=user_response["status_code"]
-        )
-
-    discord_user = user_response["data"]
-
-    return success_response(
-        msg="Discord user processed successfully",
-        data={
-            "discord_user": discord_user
-        }
-    )
+# def create_user_via_discord(token):
+#
+#     user_response = get_discord_user(token)
+#
+#     if not user_response["success"]:
+#         return error_response(
+#             msg=user_response["msg"],
+#             error_code=user_response["error_code"],
+#             error=user_response.get("error"),
+#             status_code=user_response["status_code"]
+#         )
+#
+#     discord_user = user_response["data"]
+#
+#     return success_response(
+#         msg="Discord user processed successfully",
+#         data={
+#             "discord_user": discord_user
+#         }
+#     )
 
 
 # =========================================================
 # TEST
 # =========================================================
 
-print(
-    json.dumps(
-        get_discord_user(DISCORD_TEST_USER),
-        indent=4
-    )
-)
+# print(
+#     json.dumps(
+#         # create_user_via_discord("FAKEACCESSTOKEN1234"),
+#         indent=4
+#     )
+# )
+print(get_discord_user("a"))
