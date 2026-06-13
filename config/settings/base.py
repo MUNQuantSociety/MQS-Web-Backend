@@ -19,10 +19,42 @@ DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 # =========================================================
 
 DISCORD = {
-    "BASE_URL": config("DISCORD_BASE_URL"),
-    "GUILD_ID": config("DISCORD_GUILD_ID"),
-    "BOT_TOKEN": config("DISCORD_BOT_TOKEN"),
-    "TEST_USER": config("DISCORD_TEST_USER"),
+    "BASE_URL": config(
+        "DISCORD_BASE_URL",
+        default="https://discord.com/api/v10",
+    ),
+
+    "CLIENT_ID": config(
+        "DISCORD_CLIENT_ID",
+    ),
+
+    "CLIENT_SECRET": config(
+        "DISCORD_CLIENT_SECRET",
+    ),
+
+    "GUILD_ID": config(
+        "DISCORD_GUILD_ID",
+    ),
+
+    "BOT_TOKEN": config(
+        "DISCORD_BOT_TOKEN",
+    ),
+
+    "REQUEST_TIMEOUT": config(
+        "DISCORD_REQUEST_TIMEOUT",
+        default=10,
+        cast=int,
+    ),
+
+    "REDIRECT_URI": config(
+        "DISCORD_REDIRECT_URI",
+        default="http://localhost:8080/callback",
+    ),
+
+    "TEST_USER": config(
+        "DISCORD_TEST_USER",
+        default="",
+    ),
 }
 
 # Usage:
@@ -51,10 +83,12 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "corsheaders",
 ]
 LOCAL_APPS = [
     "apps.api",
     "apps.accounts",
+    "apps.authorization",
     "apps.calendar",
     "apps.ibkr",
     "apps.leaderboard",
@@ -73,6 +107,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -154,3 +189,13 @@ REST_FRAMEWORK = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+]
