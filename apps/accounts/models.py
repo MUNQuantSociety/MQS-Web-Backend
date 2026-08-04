@@ -16,6 +16,8 @@ class Profile(models.Model):
     is_guild_member = models.BooleanField(default=False)
     guild_roles = models.JSONField(default=list, blank=True)
 
+    has_password = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

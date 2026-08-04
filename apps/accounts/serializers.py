@@ -14,6 +14,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "discord_avatar_url",
             "is_guild_member",
             "guild_roles",
+            "has_password",
             "created_at",
             "updated_at",
         ]

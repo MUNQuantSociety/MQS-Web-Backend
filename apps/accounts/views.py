@@ -15,6 +15,15 @@ def me(request):
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
+def confirm_password_set(request):
+    profile = request.user
+    profile.has_password = True
+    profile.save(update_fields=["has_password", "updated_at"])
+    return Response(ProfileSerializer(profile).data)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def sync_discord(request):
     profile = request.user
 

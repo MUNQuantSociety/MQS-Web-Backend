@@ -78,15 +78,21 @@ class SupabaseJWTAuthentication(BaseAuthentication):
         avatar_url = metadata.get("avatar_url") or metadata.get("picture") or ""
         email = claims.get("email") or metadata.get("email") or ""
 
-        profile, _created = Profile.objects.get_or_create(
-            id=user_id,
-            defaults={
-                "email": email,
-                "discord_id": discord_id,
-                "discord_username": discord_username,
-                "discord_avatar_url": avatar_url,
-            },
-        )
+        profile = Profile.objects.filter(id=user_id).first()
+
+        if profile is None:
+            if not discord_id:
+                raise AuthenticationFailed(
+                    "An account must be created by signing up with Discord first."
+                )
+
+            return Profile.objects.create(
+                id=user_id,
+                email=email,
+                discord_id=discord_id,
+                discord_username=discord_username,
+                discord_avatar_url=avatar_url,
+            )
 
         updates = {
             "email": email,
