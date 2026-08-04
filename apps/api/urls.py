@@ -8,4 +8,5 @@ urlpatterns = [
     path("health/", views.health_check, name="health-check"),
 
     path("auth/", include("apps.authorization.urls")),
+    path("accounts/", include("apps.accounts.urls")),
 ]

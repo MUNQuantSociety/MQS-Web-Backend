@@ -67,6 +67,23 @@ DISCORD = {
 # DISCORD_TEST_USER = settings.DISCORD["TEST_USER"]
 
 
+# =========================================================
+# Supabase Environment Config
+# =========================================================
+
+SUPABASE = {
+    "URL": config(
+        "SUPABASE_URL",
+    ),
+}
+
+# Usage:
+#
+# from django.conf import settings
+#
+# SUPABASE_URL = settings.SUPABASE["URL"]
+
+
 ALLOWED_HOSTS = config(
     "DJANGO_ALLOWED_HOSTS",
     default="localhost,127.0.0.1",
@@ -185,6 +202,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "apps.authorization.authentication.SupabaseJWTAuthentication",
     ],
 }
 
