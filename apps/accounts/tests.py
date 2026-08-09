@@ -1,8 +1,10 @@
 import uuid
+from typing import cast
 
 import jwt
 from django.conf import settings
 from django.test import TestCase
+from rest_framework.response import Response
 from rest_framework.test import APIClient
 
 from apps.accounts.models import Profile
@@ -32,7 +34,7 @@ class SupabaseJWTAuthenticationTests(TestCase):
         self.assertEqual(response.status_code, 401)
 
     def test_me_with_invalid_token_is_unauthorized(self):
-        self.client.credentials(HTTP_AUTHORIZATION="Bearer not-a-real-token")
+        cast(APIClient, self.client).credentials(HTTP_AUTHORIZATION="Bearer not-a-real-token")
         response = self.client.get("/api/v1/accounts/me/")
         self.assertEqual(response.status_code, 401)
 
@@ -40,10 +42,11 @@ class SupabaseJWTAuthenticationTests(TestCase):
         user_id = uuid.uuid4()
         token = make_token(user_id)
 
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
-        response = self.client.get("/api/v1/accounts/me/")
+        cast(APIClient, self.client).credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
+        response = cast(Response, self.client.get("/api/v1/accounts/me/"))
 
         self.assertEqual(response.status_code, 200)
+        assert response.data is not None
         self.assertEqual(response.data["id"], str(user_id))
         self.assertEqual(response.data["discord_id"], "123456789012345678")
         self.assertTrue(Profile.objects.filter(id=user_id).exists())
